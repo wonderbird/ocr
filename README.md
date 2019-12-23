@@ -18,8 +18,10 @@ On a Windows Command Prompt execute the following batch file
 ocr.bat "Your File.pdf"
 ```
 
-`Your File.pdf` will then be converted page by page. The result will be stored in `Your File eBook.pdf`.
+`Your File.pdf` will then be converted page by page. The result will be stored in `Your File <quality>-Quality.pdf`.
+`<quality>` is either "Printer", "Ebook" or "Screen", depending on the configuration (see Notes).
 
 ## Notes
 
+The default quality can be configured in the `ocr.ps1` script variable `$Quality`. See there for valid values.
 During conversion a folder `temp` will be created to hold temporary files. The folder will be deleted after converting.

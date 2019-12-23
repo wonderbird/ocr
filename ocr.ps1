@@ -2,8 +2,13 @@
     [parameter(Mandatory=$true,HelpMessage="Path to the input PDF file")]
     $FileName)
 
+$Quality="printer"
+
+$TextInfo = (Get-Culture).TextInfo
+$QualityCapitalized = $TextInfo.ToTitleCase($Quality)
+
 $BaseName=[io.path]::GetFileNameWithoutExtension($FileName)
-$TargetName="$BaseName eBook.pdf"
+$TargetName="$BaseName $QualityCapitalized-Quality.pdf"
 
 $IntermediateDir="temp"
 $IntermediateOcrName=".\$IntermediateDir\$BaseName OCR.pdf"
@@ -35,7 +40,7 @@ Write-Host "Compressing" -ForegroundColor Green
 # /printer = output for printer (high quality)
 # /ebook   = output for eBook reader (medium quality)
 # /screen  = output for screen reading (low quality, for a 72 dpi display)
-gswin64c "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.5" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$TargetName" "$IntermediateOcrName"
+gswin64c "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.5" "-dPDFSETTINGS=/$Quality" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$TargetName" "$IntermediateOcrName"
 
 Write-Host "Cleaning up" -ForegroundColor Green
 Remove-Item -Recurse -Force "$IntermediateDir"
